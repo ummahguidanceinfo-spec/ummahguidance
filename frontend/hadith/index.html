@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>হাদীসের কিতাব সমূহ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=family=Noto+Serif+Bengali:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600&family=Hind+Siliguri:wght@400;500;600;700&display=block" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <style>
 
@@ -1100,6 +1100,11 @@
     border-radius:10px; padding:11px 14px; cursor:pointer; position:relative;
     font-family:'Kalpurush','Hind Siliguri','Noto Sans Bengali',sans-serif; font-size:14.5px; color:var(--ink);
   }
+  #rsFontDropdownLabel:not(:empty){
+    display:inline-block;
+    font-family:inherit;
+    transition:font-family .2s ease;
+  }
   .rs-dropdown svg{ width:16px; height:16px; stroke:var(--muted); transition:transform .18s; }
   .rs-dropdown.open svg{ transform:rotate(180deg); }
   .rs-dropdown-list{
@@ -1109,8 +1114,10 @@
   .rs-dropdown-list.open{ display:block; }
   .rs-dropdown-opt{
     padding:11px 14px; font-family:'Kalpurush','Hind Siliguri','Noto Sans Bengali',sans-serif; font-size:14px;
-    color:var(--ink); cursor:pointer; border-bottom:1px solid var(--line);
+    color:var(--ink); cursor:pointer; border-bottom:1px solid var(--line); transition:font-family .2s ease;
   }
+  .rs-dropdown-opt[data-font="Amiri"]{ font-family:'Amiri',serif !important; font-size:16px; }
+  .rs-dropdown-opt.sel[data-font="Amiri"]{ font-family:'Amiri',serif !important; }
   .rs-dropdown-opt:last-child{ border-bottom:none; }
   .rs-dropdown-opt:hover{ background:#f4f8f4; }
   .rs-dropdown-opt.sel{ color:var(--mid-green); font-weight:700; }
@@ -1548,7 +1555,7 @@
   }
   .saved-remove:hover{ color:#d1495b; }
   .saved-arabic{
-    font-size:18px; line-height:1.8; color:var(--gold); margin-bottom:12px; text-align:right;
+    font-family:'Amiri',serif !important; font-size:18px; line-height:1.8; color:var(--gold); margin-bottom:12px; text-align:right;
   }
   .saved-text{
     font-size:14px; line-height:1.7; color:var(--ink); text-align:right;
@@ -2360,7 +2367,6 @@ window.hhToast = hhToast;
     </div>
   </header>
   <div class="sas-body">
-    <div class="sas-list" id="savedHadithsList"></div>
     <div class="sas-empty-block" id="savedEmptyBlock">
       <div class="sas-empty-illust">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
@@ -2551,10 +2557,10 @@ window.hhToast = hhToast;
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
           <div class="rs-dropdown-list" id="rsFontDropdownList">
-            <div class="rs-dropdown-opt sel">KFGQ</div>
-            <div class="rs-dropdown-opt">Amiri</div>
-            <div class="rs-dropdown-opt">Amiri Quran</div>
-            <div class="rs-dropdown-opt">Uthmanic</div>
+            <div class="rs-dropdown-opt sel" data-font="KFGQ">KFGQ</div>
+            <div class="rs-dropdown-opt" data-font="Amiri">Amiri</div>
+            <div class="rs-dropdown-opt" data-font="Amiri Quran">Amiri Quran</div>
+            <div class="rs-dropdown-opt" data-font="Uthmanic">Uthmanic</div>
           </div>
         </div>
       </div>
@@ -4783,32 +4789,11 @@ function showUlumDetail(term){
 ulumDetailBackBtn.addEventListener('click', showHadithUlum);
 
 /* ---- সংরক্ষিত (Saved Hadiths) ---- */
-const savedHadithsList = document.getElementById('savedHadithsList');
 const savedEmptyBlock = document.getElementById('savedEmptyBlock');
 
 function buildSavedHadithsList(){
-  savedHadithsList.innerHTML = '';
-  // Display all topics as saved hadiths (from বিষয়ভিত্তিক হাদিস)
-  if(!FIQH_TOPICS || FIQH_TOPICS.length === 0){
-    savedEmptyBlock.style.display = 'block';
-    return;
-  }
-  
-  let hasContent = false;
-  FIQH_TOPICS.forEach((t, idx)=>{
-    hasContent = true;
-    const color = HADITH_BADGE_COLORS[idx % HADITH_BADGE_COLORS.length];
-    const card = document.createElement('button');
-    card.className = 'sas-card';
-    card.innerHTML = `
-      <span class="sas-card-icon topic-badge" style="background:${color}">${t.num ? toBnDigits(t.num) : ''}</span>
-      <span class="sas-card-body">
-        <p class="sas-card-title">${t.title}</p>
-      </span>`;
-    card.addEventListener('click', ()=> showTopicDetail(t));
-    savedHadithsList.appendChild(card);
-  });
-  
+  const sasBody = document.querySelector('#hadithSavedScreen .sas-body');
+  const hasContent = !!(sasBody && sasBody.querySelector('.saved-item'));
   savedEmptyBlock.style.display = hasContent ? 'none' : 'block';
 }
 
@@ -5934,7 +5919,7 @@ if(hdoOverlay){
           arabic: h.arabic || '',
           content: plainText
         };
-        const sasBody = document.querySelector('.sas-body');
+        const sasBody = document.querySelector('#hadithSavedScreen .sas-body');
         if(sasBody){
           const savedHTML = `
             <div class="saved-item" data-saved-id="${item.id}">
@@ -5947,11 +5932,13 @@ if(hdoOverlay){
             </div>
           `;
           sasBody.insertAdjacentHTML('afterbegin', savedHTML);
+          if(typeof buildSavedHadithsList === 'function') buildSavedHadithsList();
           // Remove button functionality
           sasBody.querySelector(`[data-saved-id="${item.id}"] .saved-remove`).addEventListener('click', function(e){
             e.stopPropagation();
             e.currentTarget.closest('.saved-item').remove();
             hhToast('সংরক্ষিত থেকে সরানো হয়েছে।');
+            if(typeof buildSavedHadithsList === 'function') buildSavedHadithsList();
           });
         }
         hhToast('হাদিসটি সংরক্ষিত করা হয়েছে।', 'ok');
