@@ -37,7 +37,15 @@
     min-height:100vh;
   }
   .bn-serif{font-family:'Kalpurush','Hind Siliguri','Noto Sans Bengali',sans-serif;}
-  .ar{font-family:'Amiri',serif;}
+  .ar{font-family:'Amiri',serif;} 
+  /* সকল আরবি ফন্ট আমিরি ফন্ট ব্যবহার করবে */
+  .ayah-arabic,
+  .hadith-arabic,
+  .tafsir-ayah-ar,
+  .card-ar,
+  .ar-small{
+    font-family:'Amiri',serif !important;
+  }
 
   /* ---------- Header ---------- */
   header.top{
@@ -397,7 +405,7 @@
   .bismillah-box .translit{font-size:13.5px; color:var(--muted);}
   .ayah-block{padding:22px 0; border-bottom:1px solid var(--line);}
   .ayah-arabic{
-    font-family:var(--hh-q-arfont,'Amiri',serif); font-size:var(--hh-q-arsize,28px); line-height:2.2; color:var(--ink);
+    font-family:'Amiri',serif; font-size:var(--hh-q-arsize,28px); line-height:2.2; color:var(--ink);
     text-align:right; direction:rtl; transition:font-size .15s ease;
   }
   .hh-hide-translit .ayah-translit{ display:none; }
@@ -641,7 +649,6 @@
     line-height:1.9; min-height:3.8em; transition:opacity .28s ease, transform .28s ease;
     -webkit-mask-image: linear-gradient(180deg, black 0%, black 85%, transparent 100%);
     mask-image: linear-gradient(180deg, black 0%, black 85%, transparent 100%);
-    filter: blur(0.3px);
   }
   .hh-quote-line.hh-quote-fade{ opacity:0; transform:translateY(5px); }
   .hh-quote-text{ color:rgba(255,255,255,.94); }
@@ -2353,6 +2360,7 @@ window.hhToast = hhToast;
     </div>
   </header>
   <div class="sas-body">
+    <div class="sas-list" id="savedHadithsList"></div>
     <div class="sas-empty-block" id="savedEmptyBlock">
       <div class="sas-empty-illust">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
@@ -4775,10 +4783,40 @@ function showUlumDetail(term){
 ulumDetailBackBtn.addEventListener('click', showHadithUlum);
 
 /* ---- সংরক্ষিত (Saved Hadiths) ---- */
+const savedHadithsList = document.getElementById('savedHadithsList');
+const savedEmptyBlock = document.getElementById('savedEmptyBlock');
+
+function buildSavedHadithsList(){
+  savedHadithsList.innerHTML = '';
+  // Display all topics as saved hadiths (from বিষয়ভিত্তিক হাদিস)
+  if(!FIQH_TOPICS || FIQH_TOPICS.length === 0){
+    savedEmptyBlock.style.display = 'block';
+    return;
+  }
+  
+  let hasContent = false;
+  FIQH_TOPICS.forEach((t, idx)=>{
+    hasContent = true;
+    const color = HADITH_BADGE_COLORS[idx % HADITH_BADGE_COLORS.length];
+    const card = document.createElement('button');
+    card.className = 'sas-card';
+    card.innerHTML = `
+      <span class="sas-card-icon topic-badge" style="background:${color}">${t.num ? toBnDigits(t.num) : ''}</span>
+      <span class="sas-card-body">
+        <p class="sas-card-title">${t.title}</p>
+      </span>`;
+    card.addEventListener('click', ()=> showTopicDetail(t));
+    savedHadithsList.appendChild(card);
+  });
+  
+  savedEmptyBlock.style.display = hasContent ? 'none' : 'block';
+}
+
 function showHadithSaved(){
   hideAllAppScreens();
   hadithSavedScreen.style.display = 'block';
   window.scrollTo(0,0);
+  buildSavedHadithsList();
   syncBottomNav('hadithSavedScreen');
 }
 document.getElementById('hhSavedBackBtn').addEventListener('click', showHadithListing);
