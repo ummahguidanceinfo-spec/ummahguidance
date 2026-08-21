@@ -391,9 +391,13 @@
   .bismillah-box .translit{font-size:13.5px; color:var(--muted);}
   .ayah-block{padding:22px 0; border-bottom:1px solid var(--line);}
   .ayah-arabic{
-    font-family:'Amiri',serif; font-size:28px; line-height:2.2; color:var(--ink);
-    text-align:right; direction:rtl;
+    font-family:var(--hh-q-arfont,'Amiri',serif); font-size:var(--hh-q-arsize,28px); line-height:2.2; color:var(--ink);
+    text-align:right; direction:rtl; transition:font-size .15s ease;
   }
+  .hh-hide-translit .ayah-translit{ display:none; }
+  [data-action="bookmark"].hh-saved{ color:var(--gold); }
+  [data-action="bookmark"].hh-saved svg{ fill:var(--gold); stroke:var(--gold); }
+  .dot-bookmark.hh-saved{ background:var(--gold) !important; }
   .ayah-num-circle{
     display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px;
     border-radius:50%; border:1.5px solid var(--leaf-green); color:var(--mid-green);
@@ -408,6 +412,7 @@
   .ayah-action:hover{border-color:var(--leaf-green); color:var(--mid-green);}
   .ayah-action svg{width:15px; height:15px; stroke:currentColor;}
   .ayah-action.playing{background:var(--mid-green); color:#fff; border-color:var(--mid-green);}
+  .ayah-action.hh-saved{background:var(--gold); color:#fff; border-color:var(--gold);}
   .ayah-action.icon-only{padding:10px; width:38px; height:38px; justify-content:center;}
   .ayah-num-pill{
     display:flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:50%;
@@ -646,11 +651,11 @@
   }
   .hh-quote-dots span.active{ background:var(--gold); transform:scale(1.2); }
   .hh-mosque-silhouette{
-    position:absolute; left:0; right:0; bottom:0; top:0; width:100%; height:100%; opacity:.16; z-index:0; pointer-events:none;
-    background-image: url('assets/mosque-silhouette.png');
+    position:absolute; left:0; right:0; bottom:0; height:130px; width:100%; opacity:.3; z-index:0; pointer-events:none;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAADUCAYAAABqDdEIAAAKFUlEQVR4nO3d23bbNhAFUKqr///L6oPrxJZN8QYQM4O9X9IVuw4IDHAIkqIfz+dzobzPQX4MbQUwgvk/iX9GNwAAuE6g1/dc+W+gPvN/IgK9tt8msEkNczD/JyPQAaAAgQ4ABQj0ut5dWnPZDWoz/yf07+gG0NzeyeqjLFCP+T8xO/Razpx5O1uHGsz/ydmh13B1Ujpbh7zMf5ZlsUOvoOUZtrN1yMX85w+BnluPCWhSQw7mP98I9Lx6TjyTGmIz//lBoOd0x4QzqSEm859fCfR87pxoJjXMy/xPRqAD5CFkWSXQcxkxmS0gEIP5z1sCHQAKEOgAUIBAz2PkpS+X3WAsc5BNAh2Ad5xMJCHQAeLznnU2CfQ8Rk5oiwkZ2En2Yf4nIdCZnRAAShDozOz58id5GUumJ9DhgyDIy9jBsiz/jm4AmyIsVl/b4H4a3Mf8Zzc7dGb120IZYfHkOuPIlB7Pp9pPIsJAVTg739OPFY5zBjON5ej5X6UfS7NDz2P0x9YqTOi9i+LzwPdyvyPjU2UcR89/EhDozOBsQFcJg0rOjqOxpDyBTnVXF3JBEIexhDcEOpW1WsAFwXjGEjYIdNhHEIyj72EHgU5VQoA1aoOSvFgG9nsu+Z74fQ2v7O0HVgj0XF4X463Fbm3xPvv/ZSEE2JLx5Mz85y2X3HN7N/F6fA2Iw/znG4Fe055JaeLW5/W2czL/JyXQ82s5MU3yOt4Ft1Cvw/znD4FORbMvTHsCe/ZQn71GKEigQy1Hgnr2UIdSPOVONb1D6vPnR9zhnX3PeZVjOfPzIx47nGKHDgAF2KFTzeeOq9cOL+qO7srxRtylzzqOcJodOgAUINABoACBDgAFCHQAKMBDcVS156Gqrw9G+YUVMe19OG7vWBpHyrJDz6/lU8AVXzSytoC//v1j5XvX/p57HRmfvWNegfnPH4/n0xgmMmqwKiyEX/vu3fFk+/3hrWsi2/HuHcvox7WH+c9bLrlDTr0Wd29Qg6Rccod87tipuXQHydihQx53h6zdOiRihw45jNwx261DAgJ9DAskez2XGPUSpR3koFYGEOj3e778CWsi1kjENhGLNW4Q99AhnugLoXvrEJAd+r1eF+roCzf3y1QTmdrKPaxxA3mxzH1avI7SiyX269FXvfsh62S8o18eS9v+UdP7tVqfMvZ5Ki6597dnErqEmcNnsPT4uZn1rF/3Y+PbOza95g//c8m9r6OLkEVrPpXGvNKxsI81LhCB3s/ZwlXw86g41hWPid9Z44IR6H0oWLZUrpHKx8aHq2OsRjoQ6DEp9tpmGN8ZjhFC8VAc3Ge2kPOwJ9zIDr292RZt9pm5LmY+dtapi8YEent2I7yycOkDfrJWNibQoS9B9pe+gI4EOvQjwH7SJ9CJQG+r5a+YtPABEbVc46xzDQn0th5Lu/tC7i/lZqFap29ya7nGWecaEujQnsDapo+gMYEObQmq/fQVNCTQgZGEOjQi0PvYui909evEJJyYhTUuIK9+7eex/FzgH7/893Pl6+QizM/ze7Jz2lrDfvv66/fQkB16XwoX9nFCNAdrYkcCHa4TRrAe1kL8JgL9Poq6JmHejr7MzfgNJtABoACBDufZkbSnT+EkgQ4ABQj0+9h5ANCNz6H3sRbeW6HuM+l5OEHrJ/Pn0jO3/QhrXEBXdugWNABo63S2Xr3kHjnUI7eND8YIuFvkdedS284GeuQOIRe1RBVqmVZO1VKLh+IUMWeoG6pS25xxuW7OBLpipbVsNZWtvRll6+Ns7SW+wzV1NNDPPtk4StR2ze63cTFWZKWe84g6Lk2y9Uig7/k4QtTOIg41wizUOlv25ObuOtoT6EeDOkIRR2gDADFFyIijubr5/VuBfvagR3bW678dYeCoxQsx+tPHtBYpG7pk67tAv3qwIzor2z3+2TS7tARBqOkcImVDt2xdC/RWBxmpmCO1ZTZHbtt4FoMM1HQekfq+a7b+FuitD/6uzow0aPyV8bYNvKOma8maUT9+3mug9zowhTynFpeW1A5RtKhHNT2nW7L1zl+fqojn0XrRUjuMlvXKJePdNtZfA32GApvhGEeb5SqPp7D7ida3s9R0RTP08Z9jvHOH3lO2z8lX1btvjR13U9N5TZcL/45uwEVXH06JthPI7O4HSyKM3WMpshAEEmFcl+XecX0ucY67gmlzIfMOvcWEsxi3kfGznLBGPefVKhdSjkfGQO/xwFXKwQsi49uWYI16zqnHOp5uPL4GeobLDD07ON3gBaDPcsybLPSlOXWGXPhflh36Xbtou/X9ovRTlHaQX5RaitKO6OTChz8nwhk+tuZ+FluMF1epoVzkwl/fPrZ259nH0X/L/ayY9A30ZY6ty5ILt2frP8vHdv3Oe1d7/60IBR2hDQB8iLAm723Dndn6WJb7H4rLFOafIrWFdcaJs9RODpHGKVJbPnP1EfGhuEgd9Slim0bRF9/pj3b05Xf646+IfRGuTdECPVwHfRG5bYyhJtrTp7yKXBOh2hbp1a+hOmaFVzSSoU6z08d8ylALYXIhyg49w6B9ytTWWRkjtqiR+DKNUYi2vu7Q9/6yia9nI0e//1WIjgCAC9Z26o8vX99yKVt/26FvPWr/+rV333/3R+LuMvNJSPTxnHlsOCZ6rUSfaz1FH5szjmblVg7/+Pq7S+7vzjRayTxomdtelTHhKDVDS63r6VAOt7yHfuTsAoB1M6+f1U+yumXlyIfiqg9aZTMvNgDvDMu2KE+5Z+WkBKAda+oFAp0zTDroyxzjMIHOURYauIe5xiGR3hRHXBYWGMPcYzc7dADecVKRhEDPw6QCYJVL7nEJcCAK61ECLXforwOuAADgu25Z+bpD3/rBR//h1++f4YUkTmQAtoX5taOd7cmEI7mxmqsj76FXGMjXYxDmAPtV3PQNOwb30K8R4ADXWEcb8ZQ7ABQwOtArXF4BgGUZnGmjAx0AaGB0oLt3AkAVQzPN70MHgHaGZdvdT7kLcQCqG5J1oy+5AwANCHQAKECgA0ABAh0AChDoAFCAQAeAAgQ6ABQg0AGgAIEOAAUIdAAoQKADQAECHQAKEOgAUIBAB4ACBDoAFCDQAaAAgQ4ABQh0AChAoANAAQIdAAoQ6ABQgEAHgAIEOgAUINABoACBDgAFCHQAKECgA0ABAh0AChDoAFCAQAeAAgQ6ABQg0AGgAIEOAAUIdAAoQKADQAECHQAKEOgAUIBAB4ACBDoAFCDQAaAAgQ4ABQh0AChAoANAAQIdAAoQ6ABQgEAHgAIEOgAUINABoACBDgAFCHQAKECgA0ABAh0AChDoAFCAQAeAAgQ6ABQg0AGgAIEOAAUIdAAoQKADQAECHQAKEOgAUIBAB4ACBDoAFCDQAaAAgQ4ABQh0AChAoANAAQIdAAoQ6ABQgEAHgAIEOgAUINABoACBDgAFCHQAKECgA0AB/wEEKSOTNtGnqQAAAABJRU5ErkJggg==');
     background-repeat: repeat-x;
     background-position: bottom;
-    background-size: auto 110px;
+    background-size: auto 130px;
   }
   .hh-actions-card{
     background:var(--paper); border-radius:18px; box-shadow:0 16px 34px -16px rgba(14,59,49,.4);
@@ -1438,6 +1443,8 @@
   }
   .hdo-ic svg{ width:20px; height:20px; }
   .hdo-item.danger{ color:#d1495b; }
+  .hdo-item.selected{ background:#eef4ee; color:var(--mid-green); font-weight:700; }
+  .hdo-item .hdo-check{ margin-left:auto; color:var(--mid-green); width:18px; height:18px; flex:0 0 auto; }
   .hdo-item.danger .hdo-ic{ color:#d1495b; }
 
   /* =======================================================================
@@ -1922,9 +1929,9 @@
 
 
       <div class="hh-actions-card">
-        <button class="hh-bn-item active" data-hhbn="home">
-          <svg viewBox="0 0 24 24"><path d="M3 11l9 -7l9 7"/><path d="M5 10v10h5v-6h4v6h5v-10"/></svg>
-          <span>হোম</span>
+        <button class="hh-bn-item" data-hhbn="favorite">
+          <svg viewBox="0 0 24 24"><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"/></svg>
+          <span>প্রিয়</span>
         </button>
         <button class="hh-bn-item" data-hhbn="tahqiq">
           <svg viewBox="0 0 24 24"><path d="M4 4h6a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0 -2.5 -2.5h-6.5z"/><path d="M20 4h-6a3 3 0 0 0 -3 3v13a2.5 2.5 0 0 1 2.5 -2.5h6.5z"/></svg>
@@ -2544,8 +2551,8 @@
         <span>অনুবাদসহ প্লে করুন</span>
       </button>
       <button class="ms-item" data-ms="audiolang">
-        <span class="ms-ic ms-ic-flag"><img src="icons/icon-audiolang.png" alt="অডিও: বাংলা"></span>
-        <span>অডিও: বাংলা</span>
+        <span class="ms-ic ms-ic-flag"><img src="icons/icon-audiolang.png" alt="প্লেব্যাক স্পিড"></span>
+        <span id="msAudioSpeedLabel">প্লেব্যাক স্পিড: ১x</span>
       </button>
       <button class="ms-item" data-ms="translator">
         <span class="ms-ic ms-ic-translator"><img src="icons/icon-translator.png" alt="অনুবাদক পরিবর্তন"></span>
@@ -2553,25 +2560,38 @@
       </button>
       <button class="ms-item" data-ms="reciter">
         <span class="ms-ic ms-ic-reciter"><img src="icons/icon-reciter.png" alt="ক্বারী পরিবর্তন"></span>
-        <span>ক্বারী পরিবর্তন</span>
+        <span id="msReciterLabel">ক্বারী পরিবর্তন</span>
       </button>
       <button class="ms-item" data-ms="arfont">
         <span class="ms-ic ms-ic-arfont ar"><img src="icons/icon-arfont.png" alt="আরবি ফন্ট"></span>
-        <span>আরবি ফন্ট</span>
+        <span id="msArFontLabel">আরবি ফন্ট</span>
       </button>
       <button class="ms-item" data-ms="fontsize">
         <span class="ms-ic ms-ic-fontsize"><img src="icons/icon-fontsize.png" alt="ফন্ট বড়/ছোট"></span>
-        <span>ফন্ট বড়/ছোট</span>
+        <span id="msFontSizeLabel">ফন্ট: মাঝারি</span>
       </button>
       <button class="ms-item" data-ms="explain">
         <span class="ms-ic ms-ic-explain"><img src="icons/icon-explain.png" alt="ব্যাখ্যা সহ"></span>
         <span>ব্যাখ্যা সহ</span>
       </button>
       <button class="ms-item" data-ms="pronun">
-        <span class="ms-ic ms-ic-flag"><img src="icons/icon-pronun.png" alt="উচ্চারণ: বাংলা"></span>
-        <span>উচ্চারণ: বাংলা</span>
+        <span class="ms-ic ms-ic-flag"><img src="icons/icon-pronun.png" alt="উচ্চারণ"></span>
+        <span id="msPronunLabel">উচ্চারণ: চালু</span>
       </button>
     </div>
+  </div>
+</div>
+
+<!-- ============ RECITER PICKER SHEET ============ -->
+<div class="hdo-overlay" id="reciterOverlay">
+  <div class="hdo-sheet">
+    <div class="hdo-head">
+      <div class="hdo-title">ক্বারী নির্বাচন করুন</div>
+      <button class="hdo-close" id="reciterCloseBtn" aria-label="বন্ধ করুন">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="hdo-list" id="reciterList"></div>
   </div>
 </div>
 
@@ -2663,6 +2683,77 @@
 </div>
 
 <script>
+/* ================= HH SHARED LOCAL STORAGE LAYER =================
+   Powers বুকমার্ক (hadith), পিন (ayah), নোট (hadith notes), ফোল্ডার ও
+   সেটিংস (ক্বারী/ফন্ট/উচ্চারণ) — সবকিছু ব্রাউজারে (localStorage) সংরক্ষিত
+   হয়, তাই কোনো ব্যাকএন্ড/লগইন ছাড়াই ডিভাইসে কাজ করে ও পরের ভিজিটেও থেকে যায়। */
+const HH = {
+  _read(key, fallback){
+    try{
+      const raw = localStorage.getItem(key);
+      if(raw === null) return fallback;
+      return JSON.parse(raw);
+    } catch(e){ return fallback; }
+  },
+  _write(key, value){
+    try{ localStorage.setItem(key, JSON.stringify(value)); return true; }
+    catch(e){ return false; }
+  },
+  getBookmarks(){ return this._read('hh_bookmarks', []); },
+  getPins(){ return this._read('hh_pins', []); },
+  getNotes(){ return this._read('hh_notes', []); },
+  getFolders(){ return this._read('hh_folders', []); },
+  setBookmarks(v){ return this._write('hh_bookmarks', v); },
+  setPins(v){ return this._write('hh_pins', v); },
+  setNotes(v){ return this._write('hh_notes', v); },
+  setFolders(v){ return this._write('hh_folders', v); },
+  isBookmarked(id){ return this.getBookmarks().some(b=>b.id===id); },
+  isPinned(id){ return this.getPins().some(p=>p.id===id); },
+  toggleBookmark(item){
+    const list = this.getBookmarks();
+    const idx = list.findIndex(b=>b.id===item.id);
+    if(idx>-1){ list.splice(idx,1); this.setBookmarks(list); return false; }
+    list.unshift(Object.assign({savedAt:Date.now()}, item));
+    this.setBookmarks(list);
+    return true;
+  },
+  togglePin(item){
+    const list = this.getPins();
+    const idx = list.findIndex(p=>p.id===item.id);
+    if(idx>-1){ list.splice(idx,1); this.setPins(list); return false; }
+    list.unshift(Object.assign({savedAt:Date.now()}, item));
+    this.setPins(list);
+    return true;
+  },
+  removeBookmark(id){ this.setBookmarks(this.getBookmarks().filter(b=>b.id!==id)); },
+  removePin(id){ this.setPins(this.getPins().filter(p=>p.id!==id)); },
+  getNote(id){ return this.getNotes().find(n=>n.id===id) || null; },
+  saveNote(item){
+    const list = this.getNotes();
+    const idx = list.findIndex(n=>n.id===item.id);
+    const record = Object.assign({savedAt:Date.now()}, item);
+    if(idx>-1) list[idx] = Object.assign({}, list[idx], record);
+    else list.unshift(record);
+    this.setNotes(list);
+  },
+  removeNote(id){ this.setNotes(this.getNotes().filter(n=>n.id!==id)); },
+  setting(key, fallback){ return this._read('hh_setting_'+key, fallback); },
+  setSetting(key, value){ return this._write('hh_setting_'+key, value); },
+  exportAll(){
+    return JSON.stringify({
+      bookmarks:this.getBookmarks(), pins:this.getPins(), notes:this.getNotes(),
+      folders:this.getFolders(), exportedAt:Date.now()
+    }, null, 2);
+  },
+  importAll(json){
+    const data = JSON.parse(json);
+    if(data.bookmarks) this.setBookmarks(data.bookmarks);
+    if(data.pins) this.setPins(data.pins);
+    if(data.notes) this.setNotes(data.notes);
+    if(data.folders) this.setFolders(data.folders);
+  }
+};
+
 const surahs = [
   [1,"আল-ফাতিহা","الفاتحة",7,"মক্কী"],
   [2,"আল-বাকারা","البقرة",286,"মাদানী"],
@@ -3131,7 +3222,15 @@ document.querySelectorAll('.view-tab').forEach(tab=>{
 /* ================= QURAN READER (live data via alquran.cloud) ================= */
 const API_BASE = 'https://api.alquran.cloud/v1';
 const ARABIC_EDITION = 'quran-uthmani';
-const RECITER = 'ar.alafasy';
+const RECITERS = [
+  { id:'ar.alafasy', name:'মিশারী রাশিদ আল-আফাসী' },
+  { id:'ar.abdulbasitmurattal', name:'আব্দুল বাসিত (মুরাত্তাল)' },
+  { id:'ar.husary', name:'মাহমুদ খলিল আল-হুসারী' },
+  { id:'ar.minshawi', name:'মুহাম্মাদ সিদ্দিক আল-মিনশাবী' },
+  { id:'ar.abdurrahmaansudais', name:'আব্দুর রহমান আস-সুদাইস' },
+  { id:'ar.shaatree', name:'আবু বকর আশ-শাতরী' }
+];
+let RECITER = HH.setting('reciter', 'ar.alafasy');
 
 /* ---- Bangla translations (freely available full-Quran JSON editions) ----
    Source: fawazahmed0/quran-api (mirrors Tanzil.net / trusted translation files).
@@ -3423,7 +3522,7 @@ async function fetchJuz(num){
   return data;
 }
 
-function ayahActionsHTML(globalAyahNumber, numberInSurah, surahNum){
+function ayahActionsHTML(globalAyahNumber, numberInSurah, surahNum, savedClass){
   return `
     <div class="ayah-actions">
       <button class="ayah-action" data-action="tafsir" data-g="${globalAyahNumber}" data-surah="${surahNum}" data-ayah="${numberInSurah}">
@@ -3434,7 +3533,7 @@ function ayahActionsHTML(globalAyahNumber, numberInSurah, surahNum){
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
       </button>
       <span class="ayah-num-pill">${toBnDigits(numberInSurah)}</span>
-      <button class="ayah-action icon-only" data-action="bookmark" data-g="${globalAyahNumber}" title="বুকমার্ক">
+      <button class="ayah-action icon-only${savedClass||''}" data-action="bookmark" data-g="${globalAyahNumber}" title="পিন করুন">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
       </button>
       <button class="ayah-action" data-action="audio" data-g="${globalAyahNumber}">
@@ -3471,19 +3570,20 @@ function renderAyahBlock(arabicAyah, surahNum){
   const n = arabicAyah.numberInSurah;
   const translitMap = transliterationCache[resolvedSurahNum];
   const translit = translitMap ? translitMap.get(n) : null;
+  const saved = HH.isPinned('ayah-'+g) ? ' hh-saved' : '';
   return `
     <div class="ayah-block" data-ayah-index="${n}">
       <div class="ayah-top-row">
         <span class="ayah-num-orn"><span>${toBnDigits(n)}</span></span>
         <span class="ayah-dots">
           <button class="dot dot-audio" data-action="audio" data-g="${g}" title="অডিও"></button>
-          <button class="dot dot-bookmark" data-action="bookmark" data-g="${g}" title="বুকমার্ক"></button>
+          <button class="dot dot-bookmark${saved}" data-action="bookmark" data-g="${g}" title="পিন করুন"></button>
           <button class="dot dot-tafsir" data-action="tafsir" data-surah="${resolvedSurahNum}" data-ayah="${n}" title="তাফসীর"></button>
         </span>
       </div>
       <p class="ayah-arabic">${arabicAyah.text}<span class="ayah-num-circle">${toBnDigits(n)}</span></p>
       ${translit ? `<p class="ayah-translit">${translit}।</p>` : ``}
-      ${ayahActionsHTML(g, n, resolvedSurahNum)}
+      ${ayahActionsHTML(g, n, resolvedSurahNum, saved)}
       ${contentMode==='translation' ? translationsHTMLFor(resolvedSurahNum, n) : ``}
     </div>`;
 }
@@ -3607,12 +3707,30 @@ function wireAyahActions(){
       const g = btn.dataset.g;
       readerBody.querySelectorAll('.ayah-action.playing').forEach(b=>b.classList.remove('playing'));
       ayahAudio.src = `https://cdn.islamic.network/quran/audio/128/${RECITER}/${g}.mp3`;
+      ayahAudio.playbackRate = PLAYBACK_SPEEDS[hhAudioSpeedIdx];
       ayahAudio.play().catch(()=>{});
       btn.classList.add('playing');
     });
   });
   readerBody.querySelectorAll('[data-action="bookmark"]').forEach(btn=>{
-    btn.addEventListener('click', ()=> btn.classList.toggle('playing'));
+    btn.addEventListener('click', ()=>{
+      const g = btn.dataset.g;
+      const ayahBlock = btn.closest('.ayah-block');
+      const n = ayahBlock ? ayahBlock.dataset.ayahIndex : '';
+      const bnEntry = surahs.find(s=>s[0]===currentSurahNum);
+      const surahName = bnEntry ? bnEntry[1] : ('সূরা ' + currentSurahNum);
+      const item = {
+        id:'ayah-'+g,
+        type:'ayah',
+        title: surahName + ' — আয়াত ' + toBnDigits(n),
+        subtitle: 'সূরা নং ' + toBnDigits(currentSurahNum) + ', আয়াত নং ' + toBnDigits(n),
+        surah: currentSurahNum, ayah: n
+      };
+      const nowSaved = HH.togglePin(item);
+      readerBody.querySelectorAll(`[data-action="bookmark"][data-g="${g}"]`).forEach(el=>{
+        el.classList.toggle('hh-saved', nowSaved);
+      });
+    });
   });
   readerBody.querySelectorAll('[data-action="share"]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
@@ -3632,6 +3750,7 @@ function wireAyahActions(){
     btn.addEventListener('click', ()=>{
       const num = btn.dataset.surahAudio;
       ayahAudio.src = `https://cdn.islamic.network/quran/audio-surah/128/${RECITER}/${num}.mp3`;
+      ayahAudio.playbackRate = PLAYBACK_SPEEDS[hhAudioSpeedIdx];
       ayahAudio.play().catch(()=>{});
     });
   });
@@ -4974,7 +5093,7 @@ function buildHadithCardHTML(h, entry, badgeColor, rtlClass){
   const hid = `${entry.edition}-${h.hadithnumber}`;
   const arabicDisplay = h.arabicText ? (hdReaderSettings.diacritics ? h.arabicText : stripArabicDiacritics(h.arabicText)) : '';
   hadithDataStore[hid] = {
-    book:entry.short, num:digitsFor(entry.lang, h.hadithnumber),
+    hid, book:entry.short, num:digitsFor(entry.lang, h.hadithnumber),
     arabic:h.arabicText || '', text:h.text, grade
   };
   return `
@@ -5184,6 +5303,7 @@ function playNextInAudioRange(){
   }
   const g = audioRangeQueue.shift();
   ayahAudio.src = `https://cdn.islamic.network/quran/audio/128/${RECITER}/${g}.mp3`;
+  ayahAudio.playbackRate = PLAYBACK_SPEEDS[hhAudioSpeedIdx];
   ayahAudio.play().catch(()=>{});
 }
 ayahAudio.addEventListener('ended', ()=>{
@@ -5350,22 +5470,115 @@ moreSheetOverlay.addEventListener('click', (e)=>{
 });
 document.addEventListener('keydown', (e)=>{
   if(e.key === 'Escape' && moreSheetOverlay.classList.contains('open')) closeMoreSheet();
+  if(e.key === 'Escape' && reciterOverlay && reciterOverlay.classList.contains('open')) closeReciterSheet();
 });
+
+/* ---- ক্বারী (reciter) পিকার ---- */
+const reciterOverlay = document.getElementById('reciterOverlay');
+const reciterList = document.getElementById('reciterList');
+const reciterCloseBtn = document.getElementById('reciterCloseBtn');
+function reciterName(id){
+  const r = RECITERS.find(x=>x.id===id);
+  return r ? r.name : id;
+}
+function buildReciterList(){
+  reciterList.innerHTML = RECITERS.map(r=>`
+    <button class="hdo-item${r.id===RECITER ? ' selected' : ''}" data-reciter-id="${r.id}">
+      <span class="hdo-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M19 11a7 7 0 0 1-14 0"/><line x1="12" y1="18" x2="12" y2="22"/></svg></span>
+      <span>${r.name}</span>
+      ${r.id===RECITER ? '<svg class="hdo-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+    </button>`).join('');
+  reciterList.querySelectorAll('[data-reciter-id]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      RECITER = btn.dataset.reciterId;
+      HH.setSetting('reciter', RECITER);
+      if(msReciterLabel) msReciterLabel.textContent = 'ক্বারী: ' + reciterName(RECITER);
+      closeReciterSheet();
+    });
+  });
+}
+function openReciterSheet(){
+  buildReciterList();
+  reciterOverlay.classList.add('open');
+}
+function closeReciterSheet(){
+  reciterOverlay.classList.remove('open');
+}
+reciterCloseBtn.addEventListener('click', closeReciterSheet);
+reciterOverlay.addEventListener('click', (e)=>{ if(e.target === reciterOverlay) closeReciterSheet(); });
+
+/* ---- আরবি ফন্ট, ফন্ট সাইজ, উচ্চারণ টগল, প্লেব্যাক স্পিড ---- */
+const QURAN_AR_FONTS = [
+  { id:"'Amiri',serif", label:'Amiri' },
+  { id:"'Amiri Quran',serif", label:'Amiri Quran' }
+];
+const QURAN_FONT_SIZES = [
+  { id:'22px', label:'ছোট' },
+  { id:'28px', label:'মাঝারি' },
+  { id:'34px', label:'বড়' }
+];
+const PLAYBACK_SPEEDS = [1, 1.25, 1.5, 0.75];
+
+let hhQArFontIdx = Math.max(0, QURAN_AR_FONTS.findIndex(f=>f.id===HH.setting('q_arfont', QURAN_AR_FONTS[0].id)));
+let hhQFontSizeIdx = Math.max(0, QURAN_FONT_SIZES.findIndex(f=>f.id===HH.setting('q_arsize', QURAN_FONT_SIZES[1].id)));
+let hhQShowTranslit = HH.setting('q_show_translit', true);
+let hhAudioSpeedIdx = Math.max(0, PLAYBACK_SPEEDS.indexOf(HH.setting('audio_speed', 1)));
+
+const msArFontLabel = document.getElementById('msArFontLabel');
+const msFontSizeLabel = document.getElementById('msFontSizeLabel');
+const msPronunLabel = document.getElementById('msPronunLabel');
+const msAudioSpeedLabel = document.getElementById('msAudioSpeedLabel');
+const msReciterLabel = document.getElementById('msReciterLabel');
+
+function applyQuranReaderSettings(){
+  document.documentElement.style.setProperty('--hh-q-arfont', QURAN_AR_FONTS[hhQArFontIdx].id);
+  document.documentElement.style.setProperty('--hh-q-arsize', QURAN_FONT_SIZES[hhQFontSizeIdx].id);
+  document.body.classList.toggle('hh-hide-translit', !hhQShowTranslit);
+  if(msArFontLabel) msArFontLabel.textContent = 'আরবি ফন্ট: ' + QURAN_AR_FONTS[hhQArFontIdx].label;
+  if(msFontSizeLabel) msFontSizeLabel.textContent = 'ফন্ট: ' + QURAN_FONT_SIZES[hhQFontSizeIdx].label;
+  if(msPronunLabel) msPronunLabel.textContent = 'উচ্চারণ: ' + (hhQShowTranslit ? 'চালু' : 'বন্ধ');
+  if(msAudioSpeedLabel) msAudioSpeedLabel.textContent = 'প্লেব্যাক স্পিড: ' + PLAYBACK_SPEEDS[hhAudioSpeedIdx] + 'x';
+  if(msReciterLabel) msReciterLabel.textContent = 'ক্বারী: ' + reciterName(RECITER);
+  ayahAudio.playbackRate = PLAYBACK_SPEEDS[hhAudioSpeedIdx];
+}
+applyQuranReaderSettings();
+
 moreSheetOverlay.querySelectorAll('.ms-item').forEach(item=>{
   item.addEventListener('click', ()=>{
     const action = item.dataset.ms;
-    closeMoreSheet();
     if(action === 'playtrans'){
+      closeMoreSheet();
       openReader('surah', currentSurahNum);
       document.querySelector('.content-tab[data-mode="recitation"]')?.click();
       const firstAyahAudioBtn = readerBody.querySelector('[data-action="audio"]');
       if(firstAyahAudioBtn) firstAyahAudioBtn.click();
     } else if(action === 'translator'){
+      closeMoreSheet();
       openTransPanel();
     } else if(action === 'explain'){
+      closeMoreSheet();
       openTafsirModal(currentSurahNum, currentAyahIndex || 1);
+    } else if(action === 'reciter'){
+      closeMoreSheet();
+      openReciterSheet();
+    } else if(action === 'arfont'){
+      hhQArFontIdx = (hhQArFontIdx + 1) % QURAN_AR_FONTS.length;
+      HH.setSetting('q_arfont', QURAN_AR_FONTS[hhQArFontIdx].id);
+      applyQuranReaderSettings();
+    } else if(action === 'fontsize'){
+      hhQFontSizeIdx = (hhQFontSizeIdx + 1) % QURAN_FONT_SIZES.length;
+      HH.setSetting('q_arsize', QURAN_FONT_SIZES[hhQFontSizeIdx].id);
+      applyQuranReaderSettings();
+    } else if(action === 'pronun'){
+      hhQShowTranslit = !hhQShowTranslit;
+      HH.setSetting('q_show_translit', hhQShowTranslit);
+      applyQuranReaderSettings();
+    } else if(action === 'audiolang'){
+      hhAudioSpeedIdx = (hhAudioSpeedIdx + 1) % PLAYBACK_SPEEDS.length;
+      HH.setSetting('audio_speed', PLAYBACK_SPEEDS[hhAudioSpeedIdx]);
+      applyQuranReaderSettings();
     } else {
-      alert('এই ফিচারটি শীঘ্রই যুক্ত করা হবে।');
+      closeMoreSheet();
     }
   });
 });
@@ -5730,11 +5943,8 @@ function showHomeView() {
   const hadithTahqiqScreen = document.getElementById('hadithTahqiqScreen');
   if(hadithTahqiqScreen) hadithTahqiqScreen.style.display = 'none';
   
-  // সব ট্যাব থেকে active ক্লাস সরাই
+  // সব ট্যাব থেকে active ক্লাস সরাই (হোম আলাদা কোনো ট্যাব নয় বলে কোনোটিই active করা হয় না)
   document.querySelectorAll('.hh-bn-item').forEach(btn => btn.classList.remove('active'));
-  
-  // home ট্যাব active করি
-  document.querySelector('[data-hhbn="home"]').classList.add('active');
   
   // হোম ফাংশনালিটি (যদি থাকে)
   if(typeof showHadithListing === 'function') {
@@ -5744,9 +5954,6 @@ function showHomeView() {
 
 // tahqiq ট্যাব হ্যান্ডলার
 document.querySelector('[data-hhbn="tahqiq"]').addEventListener('click', showTahkikView);
-
-// home ট্যাব হ্যান্ডলার
-document.querySelector('[data-hhbn="home"]').addEventListener('click', showHomeView);
 
 // ডিফল্টভাবে হোম পেজ লোড করুন
 showHomeView();
