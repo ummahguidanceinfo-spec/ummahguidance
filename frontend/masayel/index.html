@@ -627,7 +627,10 @@
             border: 1px solid #E4EEE6;
             border-radius: 5px;
             box-shadow: 0 8px 24px rgba(27, 58, 92, 0.12);
-            min-width: 280px;
+            width: max-content;
+            min-width: min(280px, calc(100vw - 32px));
+            max-width: calc(100vw - 32px);
+            box-sizing: border-box;
             margin-top: 8px;
             opacity: 0;
             visibility: hidden;
@@ -635,6 +638,7 @@
             transition: all 0.2s ease;
             pointer-events: none;
             z-index: 1000;
+            overflow: hidden;
         }
 
         .card-menu-dropdown.active {
@@ -644,7 +648,27 @@
             pointer-events: auto;
         }
 
-        .info-footer.in-dropdown {
+        /* মোবাইল মোডে ড্রপডাউন লেফট সাইট থেকে ওপেন হবে */
+        @media (max-width: 480px) {
+            .card-header-menu {
+                left: 16px;
+                right: auto;
+            }
+
+            .card-menu-dropdown {
+                left: 0;
+                right: auto;
+                width: calc(100vw - 32px);
+                min-width: 0;
+                max-width: calc(100vw - 32px);
+            }
+
+            .card-menu-dropdown.active {
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-footer {
             display: flex !important;
             flex-direction: column;
             align-items: flex-start;
@@ -654,17 +678,51 @@
             margin: 0;
             font-size: 12px;
             color: #34495E;
+            font-family: 'Amiri', serif;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .footer-item.in-dropdown {
             width: 100%;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 8px;
+            font-family: 'Amiri', serif;
+            font-size: 13px;
+            color: #34495E;
+        }
+
+        .footer-item.in-dropdown i {
+            margin-left: auto;
+            order: 2;
+            color: #2ECC71;
+            font-size: 14px;
         }
 
         .footer-divider.in-dropdown {
             display: none;
+        }
+
+        /* তারিখ এবং লোকেশন এক লাইনে দেখানোর জন্য */
+        .footer-date-location.in-dropdown {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            font-family: 'Amiri', serif;
+            font-size: 13px;
+        }
+
+        .footer-date-location.in-dropdown span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            font-family: 'Amiri', serif;
+            font-size: 13px;
         }
 
         .masail-title-main {
@@ -1290,22 +1348,8 @@
 
         .ref-final-row { margin-top: 14px; }
 
-        .info-footer {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            padding: 16px 0;
-            border-top: 1px solid #E4EEE6;
-            border-bottom: 1px solid #E4EEE6;
-            margin: 16px 0;
-            font-size: 12px;
-            color: #34495E;
-            font-family: 'Amiri', serif;
-        }
-        
         /* শেয়ার, প্রিন্ট, বুকমার্ক বাটনের জন্য কন্টেইনার */
-        .info-footer .button-group {
+        .dropdown-footer .button-group {
             display: flex;
             gap: 12px;
             margin-left: auto;
@@ -1316,7 +1360,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
-        .info-footer .button-group .footer-btn {
+        .dropdown-footer .button-group .footer-btn {
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
@@ -1325,7 +1369,7 @@
             height: auto;
         }
         
-        .info-footer .button-group .footer-btn:hover {
+        .dropdown-footer .button-group .footer-btn:hover {
             background: rgba(255, 255, 255, 0.1) !important;
             transform: none;
         }
@@ -1362,15 +1406,6 @@
             font-family: 'Amiri', serif;
         }
         
-        /* তারিখ এবং লোকেশন এক লাইনে */
-        .info-footer > div:nth-child(3),
-        .info-footer > div:nth-child(7) {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin: 0 6px;
-        }
-
         .footer-item i {
             color: #2ECC71;
             font-size: 12px;
@@ -1416,6 +1451,62 @@
             background: linear-gradient(135deg, #2A6B73 0%, #3A7B83 100%);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* মোবাইল ডিভাইসের জন্য বাটন গ্রুপ রেসপন্সিভ স্টাইল */
+        @media (max-width: 480px) {
+            .dropdown-footer .button-group {
+                display: flex;
+                gap: 8px;
+                margin-left: auto;
+                padding: 10px 12px;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+
+            .dropdown-footer .button-group .footer-btn {
+                min-width: auto;
+                padding: 0;
+                height: auto;
+                font-size: 11px;
+            }
+
+            .footer-btn {
+                min-width: 100px;
+                height: 36px;
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .footer-btn i {
+                font-size: 16px;
+            }
+
+            .footer-btn span {
+                font-size: 11px;
+                display: none;
+            }
+
+            .dropdown-footer .button-group .footer-btn i {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .dropdown-footer .button-group {
+                padding: 8px 10px;
+                gap: 6px;
+            }
+
+            .footer-btn {
+                min-width: 90px;
+                height: 32px;
+                padding: 4px 8px;
+            }
+
+            .footer-btn i {
+                font-size: 14px;
+            }
         }
 
         .tags-inline {
@@ -2001,25 +2092,63 @@
             .footer-btn span,
             .navbar,
             .sidebar,
-            .pagination {
+            .pagination,
+            .header,
+            .list-view,
+            .detail-view .button-group,
+            .detail-view .footer-divider,
+            .detail-view .footer-date-location,
+            .dropdown-footer,
+            .action-buttons-row {
                 display: none !important;
             }
 
-            body::before {
-                content: 'প্রশ্ন-উত্তর';
+            * {
+                box-shadow: none !important;
+            }
+
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+            }
+
+            .detail-view {
+                display: block !important;
+                margin: 0;
+                padding: 20px;
+                background: white;
+                page-break-after: always;
+                position: relative;
+            }
+
+            .detail-view::before {
+                content: '';
                 position: fixed;
                 top: 50%;
                 left: 50%;
-                font-size: 100px;
+                width: 500px;
+                height: 500px;
+                background-image: url('data:image/png;base64,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');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 40%;
                 opacity: 0.08;
-                transform: translate(-50%, -50%) rotate(-45deg);
-                z-index: -1;
-                font-weight: bold;
+                transform: translate(-50%, -50%);
+                z-index: 0;
+                pointer-events: none;
             }
 
-            .answer-card {
-                page-break-inside: avoid;
-                box-shadow: none;
+            .masail-title-main,
+            .question-label,
+            .question-number,
+            .question-text,
+            .meta-row,
+            .meta-pill,
+            .answer-label,
+            .answer-text {
+                position: relative;
+                z-index: 1;
             }
 
             .question-text,
@@ -2320,7 +2449,7 @@
                 id: 21,
                 number: '165410',
                 title: 'ওয়ারিশ সম্পত্তি বণ্টন: মা, স্ত্রী, ছেলে ও ভাই-বোনের অংশ কত?',
-                question: 'আসসালামু আলাইকুম ওয়া রহমাতুল্লাহ। হযরত এক ব্যক্তি ইন্তেকাল করেছেন। তিনি রেখে গেছেন— মা, স্ত্রী, 1 ছেলে, 3 ভাই এবং 1 বোন। প্রশ্নগুলো হলো— 1. শরিয়ত অনুযায়ী এদের মধ্যে কে কত অংশ/শতকরা কত শতাংশ সম্পত্তি পাবে? 2. যদি মোট সম্পত্তি 3,00,000 (তিন লাখ) টাকা হয়, তাহলে প্রত্যেকে কত টাকা করে পাবে? 3. মৃত ব্যক্তির স্ত্রী পরবর্তীতে ইদ্দত শেষ করে অন্যত্র বিয়ে করলে, মৃত স্বামীর সম্পত্তিতে তাঁর নির্ধারিত অংশ (1/8) কি বহাল থাকবে, নাকি দ্বিতীয় বিয়ের কারণে তাঁর উত্তরাধিকার বাতিল হয়ে যাবে?',
+                question: 'আসসালামু আলাইকুম ওয়া রহমাতুল্লাহ। হযরত এক ব্যক্তি ইন্তেকাল করেছেন। তিনি রেখে গেছেন— মা, স্ত্রী, ১ ছেলে, ৩ ভাই এবং ১ বোন। প্রশ্নগুলো হলো— ১. শরিয়ত অনুযায়ী এদের মধ্যে কে কত অংশ/শতকরা কত শতাংশ সম্পত্তি পাবে? ২. যদি মোট সম্পত্তি ৩,০০,০০০ (তিন লাখ) টাকা হয়, তাহলে প্রত্যেকে কত টাকা করে পাবে? ৩. মৃত ব্যক্তির স্ত্রী পরবর্তীতে ইদ্দত শেষ করে অন্যত্র বিয়ে করলে, মৃত স্বামীর সম্পত্তিতে তাঁর নির্ধারিত অংশ (১/৮) কি বহাল থাকবে, নাকি দ্বিতীয় বিয়ের কারণে তাঁর উত্তরাধিকার বাতিল হয়ে যাবে?',
                 tags: ['মিরাস ও উত্তরাধিকার', 'ফরায়েজ'],
                 description: 'উত্তর দিয়েছেন: মুফতি ইউসুফ কাসেমী',
                 date: '05 আগস্ট, 2026',
@@ -2330,7 +2459,7 @@
                 likes: '28',
                 answerer: 'মুফতি ইউসুফ কাসেমী',
                 answererTitle: 'ইসলামী বিধান ও ফরায়েজ বিশেষজ্ঞ',
-                fullAnswer: '<div class="answer-with-refs"><h3>1. কার কত অংশ:</h3><p>মৃত ব্যক্তির ছেলে থাকার কারণে প্রত্যেকে নিম্নলিখিত অংশ পাবেন:</p><ul><li>মা: এক ষষ্ঠমাংশ বা ছয় ভাগের এক ভাগ পাবে। <i class="fa-solid fa-book-bookmark ref-icon" onclick="openRefModal(\'ref1\')" title="রেফারেন্স দেখুন"></i></li><li>স্ত্রী: এক অষ্টমাংশ বা আট ভাগের এক ভাগ পাবে। <i class="fa-solid fa-book-bookmark ref-icon" onclick="openRefModal(\'ref2\')" title="রেফারেন্স দেখুন"></i></li><li>1 ছেলে: আসাবাহ হিসেবে অবশিষ্ট সকল অংশ পাবে। <i class="fa-solid fa-book-bookmark ref-icon" onclick="openRefModal(\'ref3\')" title="রেফারেন্স দেখুন"></i></li><li>3 ভাই ও 1 বোন: মৃত ব্যক্তির ছেলে বিদ্যমান থাকায় ভাই ও বোন সম্পূর্ণ বঞ্চিত হবেন। তারা কোনো অংশ পাবেন না। <i class="fa-solid fa-book-bookmark ref-icon" onclick="openRefModal(\'ref3\')" title="রেফারেন্স দেখুন"></i></li></ul><p><strong>মোট সম্পত্তি বণ্টন:</strong> মোট সম্পত্তিকে 24 ভাগে ভাগ করে মা পাবেন 4 ভাগ, স্ত্রী পাবেন 3 ভাগ এবং ছেলে পাবেন 17 ভাগ।</p><h3>2. তিন লাখ টাকার বণ্টন:</h3><ul><li>মা: 50,000 টাকা</li><li>স্ত্রী: 37,500 টাকা</li><li>1 ছেলে: 2,12,500 টাকা</li><li>3 ভাই: 0 টাকা</li><li>1 বোন: 0 টাকা</li></ul><h3>3. দ্বিতীয় বিয়ের কারণে স্ত্রীর অংশের বিধান:</h3><p>স্বামীর মৃত্যুর সময় স্ত্রী জীবিত থাকলে মৃত স্বামীর সম্পত্তিতে স্ত্রীর অষ্টমাংশ পাওয়ার অধিকার স্থায়ীভাবে প্রতিষ্ঠিত হয়ে যায়। পরবর্তীতে ইদ্দত পালন শেষে তিনি অন্যত্র বিয়ে করলেও প্রথম স্বামীর সম্পত্তিতে তাঁর এই উত্তরাধিকার বাতিল হবে না। নির্ধারিত পুরো অংশই বহাল থাকবে। <i class="fa-solid fa-book-bookmark ref-icon" onclick="openRefModal(\'ref4\')" title="রেফারেন্স দেখুন"></i></p><p>কারণ, স্বামীর মৃত্যুর মাধ্যমে মিরাস প্রকাশ্যভাবে স্ত্রীর অধিকারে পরিণত হয়ে যায় এবং তা তাঁর জন্য স্থায়ীভাবে প্রতিষ্ঠিত হয়ে যায়। তাই দ্বিতীয় বিয়ের কারণে এই অধিকার বাতিল হবে না।</p></div>'
+                fullAnswer: '<div class="answer-with-refs"><h3>১. কার কত অংশ:</h3><p>মৃত ব্যক্তির ছেলে থাকার কারণে প্রত্যেকে নিম্নলিখিত অংশ পাবেন:</p><ul><li>মা: এক ষষ্ঠমাংশ বা ছয় ভাগের এক ভাগ পাবে। <i class="fa-solid fa-book-bookmark ref-icon" onclick="openRefModal(\'ref1\')" title="রেফারেন্স দেখুন"></i></li><li>স্ত্রী: এক অষ্টমাংশ বা আট ভাগের এক ভাগ পাবে। <i class="fa-solid fa-book-bookmark ref-icon" onclick="openRefModal(\'ref2\')" title="রেফারেন্স দেখুন"></i></li><li>১ ছেলে: আসাবাহ হিসেবে অবশিষ্ট সকল অংশ পাবে। <i class="fa-solid fa-book-bookmark ref-icon" onclick="openRefModal(\'ref3\')" title="রেফারেন্স দেখুন"></i></li><li>৩ ভাই ও ১ বোন: মৃত ব্যক্তির ছেলে বিদ্যমান থাকায় ভাই ও বোন সম্পূর্ণ বঞ্চিত হবেন। তারা কোনো অংশ পাবেন না। <i class="fa-solid fa-book-bookmark ref-icon" onclick="openRefModal(\'ref3\')" title="রেফারেন্স দেখুন"></i></li></ul><p><strong>মোট সম্পত্তি বণ্টন:</strong> মোট সম্পত্তিকে ২৪ ভাগে ভাগ করে মা পাবেন ৪ ভাগ, স্ত্রী পাবেন ৩ ভাগ এবং ছেলে পাবেন ১৭ ভাগ।</p><h3>২. তিন লাখ টাকার বণ্টন:</h3><ul><li>মা: ৫০,০০০ টাকা</li><li>স্ত্রী: ৩৭,৫০০ টাকা</li><li>১ ছেলে: ২,১২,৫০০ টাকা</li><li>৩ ভাই: ০ টাকা</li><li>১ বোন: ০ টাকা</li></ul><h3>৩. দ্বিতীয় বিয়ের কারণে স্ত্রীর অংশের বিধান:</h3><p>স্বামীর মৃত্যুর সময় স্ত্রী জীবিত থাকলে মৃত স্বামীর সম্পত্তিতে স্ত্রীর অষ্টমাংশ পাওয়ার অধিকার স্থায়ীভাবে প্রতিষ্ঠিত হয়ে যায়। পরবর্তীতে ইদ্দত পালন শেষে তিনি অন্যত্র বিয়ে করলেও প্রথম স্বামীর সম্পত্তিতে তাঁর এই উত্তরাধিকার বাতিল হবে না। নির্ধারিত পুরো অংশই বহাল থাকবে। <i class="fa-solid fa-book-bookmark ref-icon" onclick="openRefModal(\'ref4\')" title="রেফারেন্স দেখুন"></i></p><p>কারণ, স্বামীর মৃত্যুর মাধ্যমে মিরাস প্রকাশ্যভাবে স্ত্রীর অধিকারে পরিণত হয়ে যায় এবং তা তাঁর জন্য স্থায়ীভাবে প্রতিষ্ঠিত হয়ে যায়। তাই দ্বিতীয় বিয়ের কারণে এই অধিকার বাতিল হবে না।</p></div>'
             },
             {
                 id: 22,
@@ -2346,7 +2475,7 @@
                 likes: '19',
                 answerer: 'মুফতি ইউসুফ কাসেমী',
                 answererTitle: 'ফিকহ ও শরীয়া বিশেষজ্ঞ',
-                fullAnswer: 'গাছে থাকা অবস্থায় সুপারি বিক্রি করা জায়েজ।\n\nতবে শর্ত হলো, ক্রয়-বিক্রয়ের চুক্তি করার সময় গাছে সুপারি দৃশ্যমান ও বিদ্যমান থাকতে হবে। বিক্রির পর সুপারি পাকা বা কিছু ঝরে যাওয়ার স্বাভাবিক ঝুঁকি ক্রেতার ওপর বর্তাবে। কিন্তু গাছে ফুল বা সুপারি আসার আগেই অগ্রিম বিক্রি করা জায়েজ নয়।\n\n<span class="arabic-line">قال الله تعالى: وَأَحَلَّ اللَّهُ الْبَيْعَ</span>\nسورة البقرة، الآية: ٢٧٥\n\n<span class="arabic-line">قال رسول الله ﷺ: نَهَى عَنْ بَيْعِ الثِّمَارِ حَتَّى تَبْدُوَ صَلاَحُهَا</span>\nصحيح البخاري، كتاب البيوع، باب بيع الثمار قبل أن يبدو صلاحها، رقم الحديث: ٢١٩٨\n\n<span class="arabic-line">وإذا باع الثمر على الشجر والبعض قد خرج ثم خرج الباقي، فإن حلل له البائع جاز.</span>\nالمحيط البرهاني ٦/‏٣٣٥\n\n<span class="arabic-line">بِخِلَافِ الْبَيْعِ أَنَّهُ لَا يَدْخُلُ الثَّمَرُ فِي بَيْعِ الشَّجَرِ مِنْ غَيْرِ تَسْمِيَةٍ؛</span>\nبدائع الصنائع في ترتيب الشرائع ٦/‏١٤١\n\nউপরোক্ত ইসলামী বিধান অনুযায়ী, গাছে থাকা সুপারি বিক্রয়ের বিষয়ে নিম্নোক্ত বিষয়গুলি লক্ষণীয়:\n\n1. চুক্তির সময় পণ্য দৃশ্যমান হতে হবে: বিক্রয়ের সময় গাছে সুপারি বিদ্যমান এবং দেখা যায় এমন হতে হবে।\n\n2. স্বাভাবিক ঝুঁকি ক্রেতার উপর: বিক্রয়ের পর যদি কিছু সুপারি পাকে বা কিছু পড়ে যায়, তা ক্রেতার দায়িত্ব হবে।\n\n3. অগ্রিম বিক্রয় নিষেধ: যদি এখনও গাছে ফুল আসেনি বা সুপারি আসেনি, তখন সেটা বিক্রয় করা জায়েজ নয়।\n\nহাদীসে এসেছে যে নবী করীম (স.) তাজা ফল পাকার আগে বিক্রয় করতে নিষেধ করেছেন, যাতে বিক্রেতা এবং ক্রেতার মধ্যে কোনো বিরোধ না হয়।'
+                fullAnswer: 'গাছে থাকা অবস্থায় সুপারি বিক্রি করা জায়েজ।\n\nতবে শর্ত হলো, ক্রয়-বিক্রয়ের চুক্তি করার সময় গাছে সুপারি দৃশ্যমান ও বিদ্যমান থাকতে হবে। বিক্রির পর সুপারি পাকা বা কিছু ঝরে যাওয়ার স্বাভাবিক ঝুঁকি ক্রেতার ওপর বর্তাবে। কিন্তু গাছে ফুল বা সুপারি আসার আগেই অগ্রিম বিক্রি করা জায়েজ নয়।\n\n<span class="arabic-line">قال الله تعالى: وَأَحَلَّ اللَّهُ الْبَيْعَ</span>\nسورة البقرة، الآية: ٢٧٥\n\n<span class="arabic-line">قال رسول الله ﷺ: نَهَى عَنْ بَيْعِ الثِّمَارِ حَتَّى تَبْدُوَ صَلاَحُهَا</span>\nصحيح البخاري، كتاب البيوع، باب بيع الثمار قبل أن يبدو صلاحها، رقم الحديث: ٢١٩٨\n\n<span class="arabic-line">وإذا باع الثمر على الشجر والبعض قد خرج ثم خرج الباقي، فإن حلل له البائع جاز.</span>\nالمحيط البرهاني ٦/‏٣٣٥\n\n<span class="arabic-line">بِخِلَافِ الْبَيْعِ أَنَّهُ لَا يَدْخُلُ الثَّمَرُ فِي بَيْعِ الشَّجَرِ مِنْ غَيْرِ تَسْمِيَةٍ؛</span>\nبدائع الصنائع في ترتيب الشرائع ٦/‏١٤١\n\nউপরোক্ত ইসলামী বিধান অনুযায়ী, গাছে থাকা সুপারি বিক্রয়ের বিষয়ে নিম্নোক্ত বিষয়গুলি লক্ষণীয়:\n\n১. চুক্তির সময় পণ্য দৃশ্যমান হতে হবে: বিক্রয়ের সময় গাছে সুপারি বিদ্যমান এবং দেখা যায় এমন হতে হবে।\n\n২. স্বাভাবিক ঝুঁকি ক্রেতার উপর: বিক্রয়ের পর যদি কিছু সুপারি পাকে বা কিছু পড়ে যায়, তা ক্রেতার দায়িত্ব হবে।\n\n৩. অগ্রিম বিক্রয় নিষেধ: যদি এখনও গাছে ফুল আসেনি বা সুপারি আসেনি, তখন সেটা বিক্রয় করা জায়েজ নয়।\n\nহাদীসে এসেছে যে নবী করীম (স.) তাজা ফল পাকার আগে বিক্রয় করতে নিষেধ করেছেন, যাতে বিক্রেতা এবং ক্রেতার মধ্যে কোনো বিরোধ না হয়।'
             },
             {
                 id: 1,
@@ -2378,7 +2507,7 @@
                 likes: '96',
                 answerer: 'শায়েখ আব্দুল বারী',
                 answererTitle: 'ইসলামী ফিকহ ও মিরাস বিশেষজ্ঞ',
-                fullAnswer: 'এটি একটি অত্যন্ত গুরুত্বপূর্ণ ইসলামী প্রশ্ন যা বহু মানুষ জানতে চান। সংক্ষিপ্ত উত্তর হল: মুসলিম সন্তান অমুসলিম পিতামাতার মিরাস পাবে না, এবং অমুসলিম পিতামাতাও মুসলিম সন্তানের মিরাস পাবে না।\n\nইসলামী শরীয়তে মিরাস বণ্টনের একটি মৌলিক নীতি রয়েছে যা দীনের পার্থক্যের উপর ভিত্তি করে। আল্লাহ তায়ালা কুরআনে বলেছেন: \"এবং যারা বিশ্বাস করে এবং দেশ ত্যাগ করেছে এবং আমাদের রাস্তায় জিহাদ করেছে, আর যারা আশ্রয় দিয়েছে এবং সাহায্য করেছে - এরা পরস্পর বন্ধু।\" (সুরা আনফাল: 72)\n\nহাদীসে রাসুল (স.) স্পষ্টভাবে বলেছেন: মুসলিম অমুসলিমের উত্তরাধিকারী হয় না এবং অমুসলিম মুসলিমের উত্তরাধিকারী হয় না।\n\nতবে একজন মুসলিম পিতা বা মাতা তাদের অমুসলিম সন্তানদের জন্য উইল বা উপহার দিয়ে সম্পদ প্রদান করতে পারে। এটি শরীয়তসম্মত এবং বৈধ পদ্ধতি।\n\nকিন্তু মিরাস আইন অনুযায়ী, ইসলাম এবং অমুসলিমের মধ্যে কোনো উত্তরাধিকার সম্পর্ক থাকে না। এটি ইসলামী আইনের একটি স্পষ্ট এবং দৃঢ় নীতি।'
+                fullAnswer: 'এটি একটি অত্যন্ত গুরুত্বপূর্ণ ইসলামী প্রশ্ন যা বহু মানুষ জানতে চান। সংক্ষিপ্ত উত্তর হল: মুসলিম সন্তান অমুসলিম পিতামাতার মিরাস পাবে না, এবং অমুসলিম পিতামাতাও মুসলিম সন্তানের মিরাস পাবে না।\n\nইসলামী শরীয়তে মিরাস বণ্টনের একটি মৌলিক নীতি রয়েছে যা দীনের পার্থক্যের উপর ভিত্তি করে। আল্লাহ তায়ালা কুরআনে বলেছেন: \"এবং যারা বিশ্বাস করে এবং দেশ ত্যাগ করেছে এবং আমাদের রাস্তায় জিহাদ করেছে, আর যারা আশ্রয় দিয়েছে এবং সাহায্য করেছে - এরা পরস্পর বন্ধু।\" (সুরা আনফাল: ৭২)\n\nহাদীসে রাসুল (স.) স্পষ্টভাবে বলেছেন: মুসলিম অমুসলিমের উত্তরাধিকারী হয় না এবং অমুসলিম মুসলিমের উত্তরাধিকারী হয় না।\n\nতবে একজন মুসলিম পিতা বা মাতা তাদের অমুসলিম সন্তানদের জন্য উইল বা উপহার দিয়ে সম্পদ প্রদান করতে পারে। এটি শরীয়তসম্মত এবং বৈধ পদ্ধতি।\n\nকিন্তু মিরাস আইন অনুযায়ী, ইসলাম এবং অমুসলিমের মধ্যে কোনো উত্তরাধিকার সম্পর্ক থাকে না। এটি ইসলামী আইনের একটি স্পষ্ট এবং দৃঢ় নীতি।'
             },
             // পেজ ১ এর মাসআলা
             {
@@ -3391,18 +3520,15 @@
                     <div class="card-header-menu">
                         <button class="card-menu-btn" onclick="toggleCardMenu(event)" title="তথ্য"><i class="fas fa-info-circle"></i></button>
                         <div class="card-menu-dropdown" id="cardMenuDropdown">
-                            <div class="info-footer in-dropdown">
+                            <div class="dropdown-footer">
                                 <div class="footer-item answerer-info in-dropdown">
                                     <strong>${masail.answerer}</strong>
                                     <span>${masail.answererTitle}</span>
                                 </div>
                                 <div class="footer-divider in-dropdown">|</div>
-                                <div class="footer-item in-dropdown">
-                                    <i class="far fa-calendar"></i> <span>${dateStr}</span>
-                                </div>
-                                <div class="footer-divider in-dropdown">|</div>
-                                <div class="footer-item in-dropdown">
-                                    <i class="fas fa-map-marker-alt"></i> <span>${masail.location}</span>
+                                <div class="footer-item in-dropdown footer-date-location">
+                                    <span><i class="far fa-calendar"></i> ${dateStr}</span>
+                                    <span><i class="fas fa-map-marker-alt"></i> ${masail.location}</span>
                                 </div>
                                 <div class="footer-divider in-dropdown">|</div>
                                 <div class="button-group">
@@ -3429,27 +3555,6 @@
                     <div class="answer-text">
                         ${answerParagraphs}
                         <i class="fa-solid fa-book-bookmark ref-icon" title="রেফারেন্স দেখুন" onclick="openRefPopup()"></i>
-                    </div>
-
-                    <div class="info-footer">
-                        <div class="footer-item answerer-info">
-                            <strong>${masail.answerer}</strong>
-                            <span>${masail.answererTitle}</span>
-                        </div>
-                        <div class="footer-divider">|</div>
-                        <div class="footer-item">
-                            <i class="far fa-calendar"></i> <span>${dateStr}</span>
-                        </div>
-                        <div class="footer-divider">|</div>
-                        <div class="footer-item">
-                            <i class="fas fa-map-marker-alt"></i> <span>${masail.location}</span>
-                        </div>
-                        <div class="footer-divider">|</div>
-                        <div class="button-group">
-                            <button class="footer-btn" title="শেয়ার করুন" onclick="openShareModal(${masail.id})"><i class="fas fa-share-alt"></i> <span>শেয়ার করুন</span></button>
-                            <button class="footer-btn" title="প্রিন্ট করুন" onclick="window.print()"><i class="fas fa-print"></i> <span>প্রিন্ট করুন</span></button>
-                            <button class="footer-btn" title="বুকমার্ক করুন" onclick="bookmarkMasail(${masail.id})"><i class="far fa-bookmark"></i> <span>বুকমার্ক করুন</span></button>
-                        </div>
                     </div>
                 </div>
 

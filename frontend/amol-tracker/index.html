@@ -913,6 +913,33 @@
     .info-msg {
       display: none;
     }
+
+    /* প্রিন্টে Ummah Guidance লোগো ওয়াটারমার্ক */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 350px;
+      height: 350px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300"><defs><filter id="s" x="-50%25" y="-50%25" width="200%25" height="200%25"><feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.1"/></filter></defs><g filter="url(%23s)"><path d="M150 30 Q200 80 200 150 Q200 220 150 260 Q100 220 100 150 Q100 80 150 30Z" fill="rgba(196, 160, 100, 0.25)" stroke="rgba(196, 160, 100, 0.35)" stroke-width="2"/><path d="M150 70 Q180 95 180 130 L120 130 Q120 95 150 70Z" fill="rgba(196, 160, 100, 0.3)"/><circle cx="150" cy="110" r="15" fill="rgba(196, 160, 100, 0.25)"/><path d="M140 100 Q145 95 148 100" fill="none" stroke="rgba(196, 160, 100, 0.3)" stroke-width="2" stroke-linecap="round"/></g><text x="150" y="180" text-anchor="middle" font-size="24" font-weight="bold" fill="rgba(196, 160, 100, 0.25)" font-family="Arial, sans-serif">Ummah Guidance</text><text x="150" y="210" text-anchor="middle" font-size="12" fill="rgba(196, 160, 100, 0.2)" font-family="Arial, sans-serif" letter-spacing="2">Always for Ummah</text></svg>');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 350px 350px;
+      background-attachment: fixed;
+      z-index: -1;
+      opacity: 0.12;
+      pointer-events: none;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* সকল কন্টেন্ট ওয়াটারমার্কের উপরে */
+    #view-report {
+      position: relative;
+      z-index: 1;
+    }
   }
   
   body.pdf-exporting .report-filters,
